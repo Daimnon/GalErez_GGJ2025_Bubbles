@@ -13,6 +13,8 @@ public class PlayerInputs : MonoBehaviour
 
     [SerializeField] private Rigidbody2D _rb2D;
     [SerializeField] private float _speed = 100.0f;
+    [SerializeField] private float _acceleration = 20.0f;
+    [SerializeField] private float _deceleration = 1.0f;
 
     private void Awake()
     {
@@ -50,12 +52,19 @@ public class PlayerInputs : MonoBehaviour
         if (!_isInputEnabled) return;
 
         Vector2 moveVector = _moveAction.ReadValue<Vector2>();
-        Vector2 moveDirection = moveVector.normalized;
-
         _moveInputValue = moveVector; // might not be needed
+
+        moveVector.y = 0.0f;
+        Vector2 moveDirection = moveVector.normalized;
         Vector2 newVelocity = Time.fixedUnscaledDeltaTime * moveDirection;
-        rb2D.velocity = newVelocity * _speed;
+        Vector2 targetVelocity = newVelocity * _speed;
+
+        float accelerationFactor = moveVector.magnitude > 0 ? _acceleration : _deceleration;
+        rb2D.velocity = Vector2.Lerp(rb2D.velocity, targetVelocity, accelerationFactor * Time.fixedUnscaledDeltaTime);
+
+        // add camera movement with up and down
     }
+
     private void Fire(InputAction.CallbackContext obj)
     {
 
