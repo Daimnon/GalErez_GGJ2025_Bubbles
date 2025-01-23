@@ -5,16 +5,23 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputs : MonoBehaviour
 {
-    private Controls _controls;
+    private PlayerControls _controls;
     private InputAction _moveAction, _fireAction;
 
     private Vector2 _moveInputValue = Vector2.zero;
+    private Vector2 _lastInputValue = Vector2.zero;
     private bool _isInputEnabled = true;
+    private bool _isMirrored = false;
 
+    [Header("Player Config")]
     [SerializeField] private Rigidbody2D _rb2D;
     [SerializeField] private float _speed = 100.0f;
     [SerializeField] private float _acceleration = 20.0f;
     [SerializeField] private float _deceleration = 1.0f;
+
+    [Header("Bubble Interactions")]
+    [SerializeField] private BubblePooler _bubblePooler;
+    [SerializeField] private float _blowBubbleForce = 20.0f;
 
     private void Awake()
     {
@@ -53,6 +60,9 @@ public class PlayerInputs : MonoBehaviour
 
         Vector2 moveVector = _moveAction.ReadValue<Vector2>();
         _moveInputValue = moveVector; // might not be needed
+        _lastInputValue = _moveInputValue;
+
+        if (moveVector != Vector2.zero) _isMirrored = moveVector.x < 0 ? true : false;
 
         moveVector.y = 0.0f;
         Vector2 moveDirection = moveVector.normalized;
@@ -67,6 +77,11 @@ public class PlayerInputs : MonoBehaviour
 
     private void Fire(InputAction.CallbackContext obj)
     {
+        if (_lastInputValue == Vector2.zero) _lastInputValue = _isMirrored ? Vector2.left : Vector2.right;
+        Vector3 newBubblePos = transform.position + (Vector3)_lastInputValue.normalized;
+        newBubblePos.z = 0.0f;
 
+        Bubble bubble = _bubblePooler.GetFromPool(newBubblePos);
+        bubble.BlowBubble(_lastInputValue, _blowBubbleForce);
     }
 }
