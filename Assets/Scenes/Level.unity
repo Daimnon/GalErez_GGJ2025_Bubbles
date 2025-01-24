@@ -779,12 +779,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 387130433}
     - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
-      propertyPath: _groundCheckWidth
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
-      propertyPath: _groundCheckHeight
-      value: 1.1
+      propertyPath: _blowBubbleForce
+      value: 0.125
       objectReference: {fileID: 0}
     - target: {fileID: 1302655200027346137, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
       propertyPath: m_LocalPosition.x

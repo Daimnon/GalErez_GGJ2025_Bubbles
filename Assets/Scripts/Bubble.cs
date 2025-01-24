@@ -7,8 +7,11 @@ public class Bubble : MonoBehaviour, IFreezable
     private BubblePooler _bubblePooler = null;
     public BubblePooler @BubblePoller { get => _bubblePooler; set => _bubblePooler = value; }
 
-    private float _outOfBoundsLimit = 0;
+    private bool _isFrozen = false;
+    public bool IsFrozen { get => _isFrozen; set => _isFrozen = value; }
+
     private Camera _mainCam;
+    private float _outOfBoundsLimit = 0;
 
     [Header("Bubble core behaviour")]
     [SerializeField] private float _sideSway = 1f;
@@ -34,15 +37,18 @@ public class Bubble : MonoBehaviour, IFreezable
     {
         _mainCam = Camera.main;
         _outOfBoundsLimit = _mainCam.orthographicSize * 2;
-        _animationState = BlowingBubble;
     }
 
     private void Update()
     {
+        if (_isFrozen) return;
+
         CheckPlayer();
     }
     private void FixedUpdate()
     {
+        if (_isFrozen) return;
+
         _animationState.Invoke();
         CheckIfBubbleOutOfRange();
     }
@@ -86,25 +92,36 @@ public class Bubble : MonoBehaviour, IFreezable
     private void BlowingBubble()
     {
         transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, _growthAmount * Time.fixedUnscaledDeltaTime);
-        if (transform.localScale == Vector3.one)
+        if (transform.localScale.x > 0.9f)
         {
+            transform.localScale = Vector3.one;
             _startPosition = transform.position;
             _animationState = Idle;
         }
     }
     private void StepForPlayer()
     {
+        if (transform.localScale.x < 1.0f)
+        {
+            _bubblePooler.ReturnToPool(this);
+            return;
+        }
+
         _elapsedTime += Time.fixedDeltaTime;
         float verticalOffset = _elapsedTime * _verticalSpeed;
 
         transform.position = _startPosition + new Vector3(0.0f, -verticalOffset /2, 0.0f);
     }
 
+    public void ResetAnimationState()
+    {
+        _animationState = BlowingBubble;
+    }
     public void BlowBubble(Vector2 blowBubbleDirection, float blowForce, bool isMirrored)
     {
         _swayDirection = isMirrored ? 1.0f : -1.0f;
 
-        if (blowBubbleDirection == Vector2.down) _rb2D.AddForce(blowBubbleDirection * blowForce * 2, ForceMode2D.Impulse);
+        if (blowBubbleDirection == Vector2.down) _rb2D.AddForce(blowBubbleDirection * blowForce * 3, ForceMode2D.Impulse);
         else _rb2D.AddForce(blowBubbleDirection * blowForce, ForceMode2D.Impulse);
     }
 

@@ -118,6 +118,7 @@ public class PlayerInputs : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        // simulate capsule collider with two spheres, one on top and one on bottom, both in the capsule's width.
         Gizmos.color = Color.red;
 
         Vector2 capsulePosition = transform.position;

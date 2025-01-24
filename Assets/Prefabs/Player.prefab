@@ -200,5 +200,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   _jumpForce: 5
+  _groundCheckWidth: 0.4
+  _groundCheckHeight: 1.1
   _bubblePooler: {fileID: 0}
   _blowBubbleForce: 0.05

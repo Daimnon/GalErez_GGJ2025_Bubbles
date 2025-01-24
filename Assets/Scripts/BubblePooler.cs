@@ -21,6 +21,8 @@ public class BubblePooler : MonoBehaviour
             Bubble newBubble = Instantiate(_prefab, transform);
             newBubble.BubblePoller = this;
             newBubble.gameObject.SetActive(false);
+            newBubble.IsFrozen = true;
+            newBubble.ResetAnimationState();
             _pool.Add(newBubble);
         }
     }
@@ -33,6 +35,7 @@ public class BubblePooler : MonoBehaviour
         bubble.transform.SetParent(null);
         bubble.transform.SetPositionAndRotation(newPos, Quaternion.identity);
         bubble.gameObject.SetActive(true);
+        bubble.IsFrozen = false;
         _pool.Remove(bubble);
         return bubble;
     }
@@ -41,6 +44,9 @@ public class BubblePooler : MonoBehaviour
         bubble.gameObject.SetActive(false);
         bubble.transform.SetParent(transform);
         bubble.transform.position = Vector3.zero;
+        bubble.transform.localScale = new(0.1f, 0.1f, 0.1f);
+        bubble.IsFrozen = true;
+        bubble.ResetAnimationState();
         _pool.Add(bubble);
     }
 }
