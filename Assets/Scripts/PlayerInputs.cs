@@ -6,18 +6,22 @@ using UnityEngine.InputSystem;
 public class PlayerInputs : MonoBehaviour
 {
     private PlayerControls _controls;
-    private InputAction _moveAction, _fireAction;
+    private InputAction _moveAction, _fireAction, _jumpAction;
 
     private Vector2 _moveInputValue = Vector2.zero;
     private Vector2 _lastInputValue = Vector2.zero;
+    private float _groundCheckRadius;
     private bool _isInputEnabled = true;
     private bool _isMirrored = false;
+    private bool _isGrounded = false;
 
     [Header("Player Config")]
     [SerializeField] private Rigidbody2D _rb2D;
     [SerializeField] private float _speed = 100.0f;
     [SerializeField] private float _acceleration = 20.0f;
     [SerializeField] private float _deceleration = 1.0f;
+    [SerializeField] private LayerMask _groundLayer;
+    [SerializeField] private float _jumpForce = 10.0f;
 
     [Header("Bubble Interactions")]
     [SerializeField] private BubblePooler _bubblePooler;
@@ -27,25 +31,32 @@ public class PlayerInputs : MonoBehaviour
     {
         _controls = new();
         InitializeInputs();
+
+        _groundCheckRadius = transform.localScale.y / 1.9f;
     }
     private void OnEnable()
     {
         _moveAction.Enable();
         _fireAction.Enable();
+        _jumpAction.Enable();
 
         _fireAction.performed += Fire;
+        _jumpAction.performed += Jump;
     }
     private void OnDisable()
     {
         _moveAction.Disable();
         _fireAction.Disable();
+        _jumpAction.Disable();
 
         _fireAction.performed -= Fire;
+        _jumpAction.performed -= Jump;
     }
 
     private void Update()
     {
         GetMoveVector();
+        CheckGrounded();
     }
     private void FixedUpdate()
     {
@@ -56,6 +67,12 @@ public class PlayerInputs : MonoBehaviour
     {
         _moveAction = _controls.Player.Move;
         _fireAction = _controls.Player.Fire;
+        _jumpAction = _controls.Player.Jump;
+    }
+
+    private void CheckGrounded()
+    {
+        _isGrounded = Physics2D.OverlapCircle(transform.position, _groundCheckRadius, _groundLayer);
     }
 
     private void GetMoveVector()
@@ -81,7 +98,10 @@ public class PlayerInputs : MonoBehaviour
 
         // add camera movement with up and down
     }
-
+    private void Jump(InputAction.CallbackContext obj)
+    {
+        if (_isGrounded) _rb2D.velocity = new Vector2(_rb2D.velocity.x, _jumpForce);
+    }
     private void Fire(InputAction.CallbackContext obj)
     {
         if (_lastInputValue == Vector2.zero) _lastInputValue = _isMirrored ? Vector2.left : Vector2.right;
@@ -90,5 +110,11 @@ public class PlayerInputs : MonoBehaviour
 
         Bubble bubble = _bubblePooler.GetFromPool(newBubblePos);
         bubble.BlowBubble(_lastInputValue, _blowBubbleForce);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, _groundCheckRadius);
     }
 }

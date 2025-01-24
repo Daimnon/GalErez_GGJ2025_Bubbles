@@ -26,6 +26,10 @@ public class Bubble : MonoBehaviour, IFreezable
         _animationState = BlowingBubble;
     }
 
+    private void Update()
+    {
+        CheckAboveBubble();
+    }
     private void FixedUpdate()
     {
         _animationState.Invoke();
