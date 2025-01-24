@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Bubble : MonoBehaviour, IFreezable
@@ -31,6 +32,9 @@ public class Bubble : MonoBehaviour, IFreezable
     [SerializeField] private float _growthAmount = 20.0f;
     [SerializeField] private float _blowDownTimer = 0.0f;
     [SerializeField] private float _blowDownTime = 3.0f;
+
+    [Header("Pop animation")]
+    [SerializeField] private static readonly int _stateNameHash = Animator.StringToHash("Base Layer.StateName");
 
     [Header("Check Player")]
     [SerializeField] private LayerMask _playerLayer;
@@ -64,21 +68,26 @@ public class Bubble : MonoBehaviour, IFreezable
 
     private void CheckPlayer()
     {
-        if (_isFrozen && _animator.GetBool("IsPopped"))
-        {
-            if (_animator.playbackTime >= _animator.recorderStopTime /0.9f)
-            {
-                _bubblePooler.ReturnToPool(this);
-            }
-        }
-        else if (_isFrozen) return;
+        
+        if (_isFrozen) return;
         Vector2 rayOrigin = transform.position;
 
         Vector2 rayDirection = Vector2.up;
         float rayDistance = transform.localScale.y * _playerCheckDistance;
 
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, rayDistance, _playerLayer);
 
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        if (_animator.GetBool("IsPopped") && stateInfo.IsName("anim_bubble_pop"))
+        {
+            if (stateInfo.normalizedTime >= 0.9f)
+            {
+                ResetAnimationState();
+                _bubblePooler.ReturnToPool(this);
+                return;
+            }
+        }
+        
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, rayDistance, _playerLayer);
         if (hit.collider != null && _animationState != StepForPlayer)
         {
             Debug.Log($"Ray hit detected above the bubble: {hit.collider.name}");
@@ -92,9 +101,7 @@ public class Bubble : MonoBehaviour, IFreezable
         {
             // do pop animation
             _animator.SetBool("IsPopped", true);
-            _isFrozen = true;
         }
-
         
     }
     private void CheckIfBubbleOutOfRange()

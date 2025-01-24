@@ -33,6 +33,7 @@ public class PlayerInputs : MonoBehaviour
 
     [Header("Camera")]
     [SerializeField] private Transform _tracker;
+    [SerializeField] private float _cameraJumpOffset = 4.0f;
 
     [Header("Bubble Interactions")]
     [SerializeField] private BubblePooler _bubblePooler;
@@ -92,13 +93,17 @@ public class PlayerInputs : MonoBehaviour
             _animator.SetBool("IsJumping", true);
 
             // camera
-            Vector3 newTrackerPos = transform.position + Vector3.down;
+            Vector3 newTrackerPos = transform.position + Vector3.down * _cameraJumpOffset;
             newTrackerPos.y = _tracker.position.y;
             _tracker.position = newTrackerPos;
         }
         if (!isGrounded && _isGrounded)
         {
             _animator.SetBool("IsJumping", false);
+            Vector3 newTrackerPos = transform.position + Vector3.down * _cameraJumpOffset * 2;
+        }
+        if (isGrounded &&_isGrounded)
+        {
             _tracker.position = transform.position; // camera
         }
     }

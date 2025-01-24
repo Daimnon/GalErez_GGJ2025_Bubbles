@@ -32,10 +32,10 @@ public class BubblePooler : MonoBehaviour
         if (_pool.Count < 1) InitializePool();
 
         Bubble bubble = _pool[0];
-        bubble.ResetAnimationState();
         bubble.transform.SetParent(null);
         bubble.transform.SetPositionAndRotation(newPos, Quaternion.identity);
         bubble.gameObject.SetActive(true);
+        bubble.ResetAnimationState();
         bubble.IsFrozen = false;
         _pool.Remove(bubble);
         return bubble;
