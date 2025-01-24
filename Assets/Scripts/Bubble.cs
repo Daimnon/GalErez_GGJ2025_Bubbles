@@ -77,7 +77,7 @@ public class Bubble : MonoBehaviour, IFreezable
 
 
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-        if (_animator.GetBool("IsPopped") && stateInfo.IsName("anim_bubble_pop"))
+        if (_animator.GetBool("IsPopped"))
         {
             if (stateInfo.normalizedTime >= 0.9f)
             {
