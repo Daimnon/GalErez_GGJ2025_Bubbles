@@ -7,6 +7,9 @@ public class Bubble : MonoBehaviour, IFreezable
     private BubblePooler _bubblePooler = null;
     public BubblePooler @BubblePoller { get => _bubblePooler; set => _bubblePooler = value; }
 
+    private float _outOfBoundsLimit = 0;
+    private Camera _mainCam;
+
     [Header("Bubble core behaviour")]
     [SerializeField] private float _sideSway = 1f;
     [SerializeField] private float _horizontalSpeed = 1f;
@@ -29,6 +32,8 @@ public class Bubble : MonoBehaviour, IFreezable
     
     private void Start()
     {
+        _mainCam = Camera.main;
+        _outOfBoundsLimit = _mainCam.orthographicSize * 2;
         _animationState = BlowingBubble;
     }
 
@@ -39,6 +44,7 @@ public class Bubble : MonoBehaviour, IFreezable
     private void FixedUpdate()
     {
         _animationState.Invoke();
+        CheckIfBubbleOutOfRange();
     }
 
     private void CheckPlayer()
@@ -59,6 +65,13 @@ public class Bubble : MonoBehaviour, IFreezable
             // do pop animation
             _bubblePooler.ReturnToPool(this);
         }
+    }
+    private void CheckIfBubbleOutOfRange()
+    {
+        Vector3 bubblePosition = transform.position;
+        float cameraUpperBound = _mainCam.transform.position.y + _mainCam.orthographicSize;
+
+        if (bubblePosition.y > cameraUpperBound + _outOfBoundsLimit) _bubblePooler.ReturnToPool(this);
     }
 
     private void Idle()
@@ -90,7 +103,9 @@ public class Bubble : MonoBehaviour, IFreezable
     public void BlowBubble(Vector2 blowBubbleDirection, float blowForce, bool isMirrored)
     {
         _swayDirection = isMirrored ? 1.0f : -1.0f;
-        _rb2D.AddForce(blowBubbleDirection * blowForce, ForceMode2D.Impulse);
+
+        if (blowBubbleDirection == Vector2.down) _rb2D.AddForce(blowBubbleDirection * blowForce * 2, ForceMode2D.Impulse);
+        else _rb2D.AddForce(blowBubbleDirection * blowForce, ForceMode2D.Impulse);
     }
 
     private void OnDrawGizmos()

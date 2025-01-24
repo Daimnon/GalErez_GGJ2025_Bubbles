@@ -27,7 +27,7 @@ public class BubblePooler : MonoBehaviour
 
     public Bubble GetFromPool(Vector3 newPos)
     {
-        if (_pool.Count < 1) return Instantiate(_prefab, newPos, Quaternion.identity);
+        if (_pool.Count < 1) InitializePool();
 
         Bubble bubble = _pool[0];
         bubble.transform.SetParent(null);
