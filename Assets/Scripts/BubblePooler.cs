@@ -32,6 +32,7 @@ public class BubblePooler : MonoBehaviour
         if (_pool.Count < 1) InitializePool();
 
         Bubble bubble = _pool[0];
+        bubble.ResetAnimationState();
         bubble.transform.SetParent(null);
         bubble.transform.SetPositionAndRotation(newPos, Quaternion.identity);
         bubble.gameObject.SetActive(true);
@@ -46,7 +47,6 @@ public class BubblePooler : MonoBehaviour
         bubble.transform.position = Vector3.zero;
         bubble.transform.localScale = new(0.1f, 0.1f, 0.1f);
         bubble.IsFrozen = true;
-        bubble.ResetAnimationState();
         _pool.Add(bubble);
     }
 }

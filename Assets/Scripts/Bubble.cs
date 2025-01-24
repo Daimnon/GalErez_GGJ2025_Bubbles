@@ -24,6 +24,7 @@ public class Bubble : MonoBehaviour, IFreezable
     [Header("Blow animation config")]
     [SerializeField] private Rigidbody2D _rb2D;
     [SerializeField] private SpriteRenderer _sR;
+    [SerializeField] private Animator _animator;
     [SerializeField] private CapsuleCollider2D _idleCollider;
     [SerializeField] private CapsuleCollider2D _underPlayerCollider;
     [SerializeField] private Sprite[] _idleSprites;
@@ -63,6 +64,14 @@ public class Bubble : MonoBehaviour, IFreezable
 
     private void CheckPlayer()
     {
+        if (_isFrozen && _animator.GetBool("IsPopped"))
+        {
+            if (_animator.playbackTime >= _animator.recorderStopTime /0.9f)
+            {
+                _bubblePooler.ReturnToPool(this);
+            }
+        }
+        else if (_isFrozen) return;
         Vector2 rayOrigin = transform.position;
 
         Vector2 rayDirection = Vector2.up;
@@ -82,8 +91,11 @@ public class Bubble : MonoBehaviour, IFreezable
         else if (hit.collider == null && _animationState == StepForPlayer && _blowDownTimer <= 0)
         {
             // do pop animation
-            _bubblePooler.ReturnToPool(this);
+            _animator.SetBool("IsPopped", true);
+            _isFrozen = true;
         }
+
+        
     }
     private void CheckIfBubbleOutOfRange()
     {
@@ -135,6 +147,9 @@ public class Bubble : MonoBehaviour, IFreezable
         _startPosition = transform.position;
         _idleCollider.enabled = true;
         _underPlayerCollider.enabled = false;
+        _sR.enabled = true; // sprite renderer is being disabled by the pop animation
+        _isFrozen = false;
+        _animator.SetBool("IsPopped", false);
         _animationState = BlowingBubble;
     }
     public void BlowBubble(Vector2 blowBubbleDirection, float blowForce, bool isMirrored)
