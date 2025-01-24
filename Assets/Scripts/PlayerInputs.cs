@@ -17,6 +17,8 @@ public class PlayerInputs : MonoBehaviour
 
     [Header("Player Config")]
     [SerializeField] private Rigidbody2D _rb2D;
+    [SerializeField] private SpriteRenderer _sR;
+    [SerializeField] private Animator _animator;
     [SerializeField] private float _speed = 100.0f;
     [SerializeField] private float _acceleration = 20.0f;
     [SerializeField] private float _deceleration = 1.0f;
@@ -24,6 +26,7 @@ public class PlayerInputs : MonoBehaviour
     [SerializeField] private float _jumpForce = 5.0f;
 
     [Header("Ground Check")]
+    [SerializeField] private Sprite _landingSprite;
     [SerializeField] private float _groundCheckWidth = 0.4f;
     [SerializeField] private float _groundCheckHeight = 1.1f;
 
@@ -74,8 +77,14 @@ public class PlayerInputs : MonoBehaviour
 
     private void CheckGrounded()
     {
+        bool isGrounded = _isGrounded;
+
+
         _isGrounded = Physics2D.OverlapCapsule(
             transform.position, new Vector2(_groundCheckWidth, _groundCheckHeight), CapsuleDirection2D.Vertical, 0f, _groundLayer);
+
+        if (isGrounded && !_isGrounded) _animator.SetBool("IsJumping", true);
+        if (!isGrounded && _isGrounded) _animator.SetBool("IsJumping", false);
     }
 
     private void GetMoveVector()

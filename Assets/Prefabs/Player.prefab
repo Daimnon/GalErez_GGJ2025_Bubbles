@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1302655200027346137}
   - component: {fileID: 925931675955043919}
   - component: {fileID: 9154458724281312989}
+  - component: {fileID: 2401491902986317152}
   - component: {fileID: 5636570688649400063}
   - component: {fileID: 15212170607170502}
   m_Layer: 6
@@ -98,6 +99,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!95 &2401491902986317152
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5315286151226868769}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d5eedbebab8065d4090a2dd66d067879, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &5636570688649400063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,6 +163,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rb2D: {fileID: 9154458724281312989}
+  _sR: {fileID: 4888037202684867926}
+  _animator: {fileID: 2401491902986317152}
   _speed: 100
   _acceleration: 20
   _deceleration: 5
@@ -148,6 +172,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   _jumpForce: 5
+  _landingSprite: {fileID: -1082079712, guid: b81e8c709ecd7cc49b891cae0cfe9c2b, type: 3}
   _groundCheckWidth: 0.4
   _groundCheckHeight: 1.1
   _bubblePooler: {fileID: 0}

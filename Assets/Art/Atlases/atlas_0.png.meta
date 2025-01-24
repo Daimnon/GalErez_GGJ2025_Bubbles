@@ -325,7 +325,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_0_jump_0
+      name: atlas_0_player_jump_0
       rect:
         serializedVersion: 2
         x: 0
@@ -346,7 +346,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_0_jump_1
+      name: atlas_0_player_jump_1
       rect:
         serializedVersion: 2
         x: 18
@@ -367,7 +367,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_0_jump_2
+      name: atlas_0_player_jump_2
       rect:
         serializedVersion: 2
         x: 36
@@ -388,7 +388,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_0_hit_0
+      name: atlas_0_player_hit_0
       rect:
         serializedVersion: 2
         x: 54
@@ -409,7 +409,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_0_hit_1
+      name: atlas_0_player_hit_1
       rect:
         serializedVersion: 2
         x: 72
@@ -430,7 +430,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_0_hit_2
+      name: atlas_0_player_hit_2
       rect:
         serializedVersion: 2
         x: 90
@@ -451,7 +451,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_0_walk_0
+      name: atlas_0_player_idle
       rect:
         serializedVersion: 2
         x: 0
@@ -472,7 +472,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_0_walk_1
+      name: atlas_0_player_walk_0
       rect:
         serializedVersion: 2
         x: 18
@@ -493,7 +493,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_0_walk_2
+      name: atlas_0_player_walk_1
       rect:
         serializedVersion: 2
         x: 36
@@ -514,7 +514,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_0_walk_3
+      name: atlas_0_player_walk_2
       rect:
         serializedVersion: 2
         x: 54
@@ -535,7 +535,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_0_walk_4
+      name: atlas_0_player_walk_3
       rect:
         serializedVersion: 2
         x: 72
@@ -556,7 +556,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_0_walk_5
+      name: atlas_0_player_walk_4
       rect:
         serializedVersion: 2
         x: 90
@@ -596,18 +596,18 @@ TextureImporter:
       atlas_0_bubble_pop_0: 27625904
       atlas_0_bubble_pop_1: -1237374826
       atlas_0_bubble_pop_2: -1486416661
-      atlas_0_hit_0: -1649951465
-      atlas_0_hit_1: -1845517645
-      atlas_0_hit_2: 306306359
-      atlas_0_jump_0: -1157870861
-      atlas_0_jump_1: -520352265
-      atlas_0_jump_2: -1082079712
-      atlas_0_walk_0: -977202029
-      atlas_0_walk_1: -1503130579
-      atlas_0_walk_2: -817830909
-      atlas_0_walk_3: 810939530
-      atlas_0_walk_4: 711899739
-      atlas_0_walk_5: 1870381431
+      atlas_0_player_hit_0: -1649951465
+      atlas_0_player_hit_1: -1845517645
+      atlas_0_player_hit_2: 306306359
+      atlas_0_player_idle: -1503130579
+      atlas_0_player_jump_0: -1157870861
+      atlas_0_player_jump_1: -520352265
+      atlas_0_player_jump_2: -1082079712
+      atlas_0_player_walk_0: -817830909
+      atlas_0_player_walk_1: 810939530
+      atlas_0_player_walk_2: 711899739
+      atlas_0_player_walk_3: 1870381431
+      atlas_0_player_walk_4: 1870381431
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
