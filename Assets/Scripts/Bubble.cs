@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Bubble : MonoBehaviour, IFreezable
 {
-    private const string PLAYER_TAG = "Player";
+    private BubblePooler _bubblePooler = null;
+    public BubblePooler @BubblePoller { get => _bubblePooler; set => _bubblePooler = value; }
 
     [Header("Bubble core behaviour")]
     [SerializeField] private float _sideSway = 1f;
@@ -18,6 +19,11 @@ public class Bubble : MonoBehaviour, IFreezable
     [SerializeField] private Rigidbody2D _rb2D;
     [SerializeField] private float _growthAmount = 20.0f;
 
+    [Header("Check Player")]
+    [SerializeField] private LayerMask _playerLayer;
+    [SerializeField] private float _playerCheckOffset = 2.0f;
+    [SerializeField] private float _playerCheckRadius = 3.0f;
+
     private delegate void StateMachine();
     private StateMachine _animationState;
     
@@ -28,26 +34,29 @@ public class Bubble : MonoBehaviour, IFreezable
 
     private void Update()
     {
-        CheckAboveBubble();
+        CheckPlayer();
     }
     private void FixedUpdate()
     {
         _animationState.Invoke();
     }
-    private void CheckAboveBubble()
+    private void CheckPlayer()
     {
-        Vector2 rayOrigin = transform.position;
-        Vector2 rayDirection = Vector2.up;
+        Vector2 circleOrigin = transform.position + Vector3.up * (transform.localScale.y / _playerCheckOffset);
+        float radius = transform.localScale.y / _playerCheckRadius;
 
-        float rayLength = transform.localScale.y /1.9f;
-        LayerMask layerMask = LayerMask.GetMask("Player");
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, rayLength, layerMask);
-        Debug.DrawRay(rayOrigin, rayDirection * rayLength, Color.red);
+        Collider2D hit = Physics2D.OverlapCircle(circleOrigin, radius, _playerLayer);
 
-        if (hit.collider != null)
+        if (hit != null && _animationState != StepForPlayer)
         {
-            Debug.Log($"Hit detected above the bubble: {hit.collider.name}");
+            Debug.Log($"Hit detected above the bubble: {hit.name}");
+            _startPosition = transform.position;
             _animationState = StepForPlayer;
+        }
+        else if (hit == null && _animationState == StepForPlayer)
+        {
+            // do pop animation
+            _bubblePooler.ReturnToPool(this);
         }
     }
 
@@ -77,9 +86,17 @@ public class Bubble : MonoBehaviour, IFreezable
         transform.position = _startPosition + new Vector3(0.0f, -verticalOffset /2, 0.0f);
     }
 
-    public void BlowBubble(Vector2 blowBubbleDirection, float blowForce)
+    public void BlowBubble(Vector2 blowBubbleDirection, float blowForce, bool isMirrored)
     {
-        _swayDirection = Random.value > 0.5f ? 1.0f : -1.0f;
+        _swayDirection = isMirrored ? 1.0f : -1.0f;
         _rb2D.AddForce(blowBubbleDirection * blowForce, ForceMode2D.Impulse);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Vector2 circleOrigin = transform.position + Vector3.up * (transform.localScale.y / _playerCheckOffset);
+        float radius = transform.localScale.y / _playerCheckRadius;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(circleOrigin, radius);
     }
 }

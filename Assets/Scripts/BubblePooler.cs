@@ -19,6 +19,7 @@ public class BubblePooler : MonoBehaviour
         for (int i = 0; i < _initialPoolSize; i++)
         {
             Bubble newBubble = Instantiate(_prefab, transform);
+            newBubble.BubblePoller = this;
             newBubble.gameObject.SetActive(false);
             _pool.Add(newBubble);
         }

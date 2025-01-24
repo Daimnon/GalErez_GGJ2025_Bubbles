@@ -775,21 +775,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
-      propertyPath: _jumpForce
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
       propertyPath: _bubblePooler
       value: 
       objectReference: {fileID: 387130433}
-    - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
-      propertyPath: _blowBubbleForce
-      value: 0.175
-      objectReference: {fileID: 0}
-    - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
-      propertyPath: _groundLayer.m_Bits
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 1302655200027346137, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -832,10 +820,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5315286151226868769, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
       propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 5315286151226868769, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
-      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5636570688649400063, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}

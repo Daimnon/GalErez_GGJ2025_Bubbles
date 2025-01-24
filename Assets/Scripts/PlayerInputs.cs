@@ -21,7 +21,7 @@ public class PlayerInputs : MonoBehaviour
     [SerializeField] private float _acceleration = 20.0f;
     [SerializeField] private float _deceleration = 1.0f;
     [SerializeField] private LayerMask _groundLayer;
-    [SerializeField] private float _jumpForce = 10.0f;
+    [SerializeField] private float _jumpForce = 5.0f;
 
     [Header("Bubble Interactions")]
     [SerializeField] private BubblePooler _bubblePooler;
@@ -110,7 +110,7 @@ public class PlayerInputs : MonoBehaviour
         newBubblePos.z = 0.0f;
 
         Bubble bubble = _bubblePooler.GetFromPool(newBubblePos);
-        bubble.BlowBubble(_lastInputValue, _blowBubbleForce);
+        bubble.BlowBubble(_lastInputValue, _blowBubbleForce, _isMirrored);
     }
 
     private void OnDrawGizmos()
