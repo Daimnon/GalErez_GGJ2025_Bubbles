@@ -108,7 +108,9 @@ public class PlayerInputs : MonoBehaviour
 
         float accelerationFactor = moveVector.magnitude > 0 ? _acceleration : _deceleration;
         rb2D.velocity = Vector2.Lerp(rb2D.velocity, targetVelocity, accelerationFactor * Time.fixedUnscaledDeltaTime);
+        _animator.SetFloat("Speed", _moveInputValue.magnitude);
 
+        _sR.flipX = _isMirrored;
         // add camera movement with up and down
     }
     private void Jump(InputAction.CallbackContext obj)
