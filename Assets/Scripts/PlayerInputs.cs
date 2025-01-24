@@ -43,9 +43,13 @@ public class PlayerInputs : MonoBehaviour
         _fireAction.performed -= Fire;
     }
 
+    private void Update()
+    {
+        GetMoveVector();
+    }
     private void FixedUpdate()
     {
-        Move(_rb2D);
+        Move(_moveInputValue, _rb2D);
     }
 
     private void InitializeInputs()
@@ -54,14 +58,17 @@ public class PlayerInputs : MonoBehaviour
         _fireAction = _controls.Player.Fire;
     }
 
-    private void Move(Rigidbody2D rb2D)
+    private void GetMoveVector()
     {
         if (!_isInputEnabled) return;
 
         Vector2 moveVector = _moveAction.ReadValue<Vector2>();
         _moveInputValue = moveVector; // might not be needed
         _lastInputValue = _moveInputValue;
-
+    }
+    private void Move(Vector2 moveVector, Rigidbody2D rb2D)
+    {
+        if (!_isInputEnabled) return;
         if (moveVector != Vector2.zero) _isMirrored = moveVector.x < 0 ? true : false;
 
         moveVector.y = 0.0f;

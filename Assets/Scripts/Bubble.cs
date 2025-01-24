@@ -30,11 +30,19 @@ public class Bubble : MonoBehaviour, IFreezable
     {
         _animationState.Invoke();
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void CheckAboveBubble()
     {
-        if (collision.collider.CompareTag(PLAYER_TAG))
+        Vector2 rayOrigin = transform.position;
+        Vector2 rayDirection = Vector2.up;
+
+        float rayLength = transform.localScale.y /1.9f;
+        LayerMask layerMask = LayerMask.GetMask("Player");
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, rayLength, layerMask);
+        Debug.DrawRay(rayOrigin, rayDirection * rayLength, Color.red);
+
+        if (hit.collider != null)
         {
+            Debug.Log($"Hit detected above the bubble: {hit.collider.name}");
             _animationState = StepForPlayer;
         }
     }
@@ -64,6 +72,7 @@ public class Bubble : MonoBehaviour, IFreezable
 
         transform.position = _startPosition + new Vector3(0.0f, -verticalOffset /2, 0.0f);
     }
+
     public void BlowBubble(Vector2 blowBubbleDirection, float blowForce)
     {
         _swayDirection = Random.value > 0.5f ? 1.0f : -1.0f;

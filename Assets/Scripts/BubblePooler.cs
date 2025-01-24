@@ -29,9 +29,9 @@ public class BubblePooler : MonoBehaviour
         if (_pool.Count < 1) return Instantiate(_prefab, newPos, Quaternion.identity);
 
         Bubble bubble = _pool[0];
-        bubble.gameObject.SetActive(true);
         bubble.transform.SetParent(null);
-        bubble.transform.position = newPos;
+        bubble.transform.SetPositionAndRotation(newPos, Quaternion.identity);
+        bubble.gameObject.SetActive(true);
         _pool.Remove(bubble);
         return bubble;
     }
