@@ -10,7 +10,7 @@ public class PlayerInputs : MonoBehaviour
 
     private Vector2 _moveInputValue = Vector2.zero;
     private Vector2 _lastInputValue = Vector2.zero;
-    private float _groundCheckRadius;
+    
     private bool _isInputEnabled = true;
     private bool _isMirrored = false;
     private bool _isGrounded = false;
@@ -23,6 +23,10 @@ public class PlayerInputs : MonoBehaviour
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private float _jumpForce = 5.0f;
 
+    [Header("Ground Check")]
+    [SerializeField] private float _groundCheckWidth = 0.4f;
+    [SerializeField] private float _groundCheckHeight = 1.1f;
+
     [Header("Bubble Interactions")]
     [SerializeField] private BubblePooler _bubblePooler;
     [SerializeField] private float _blowBubbleForce = 20.0f;
@@ -31,8 +35,6 @@ public class PlayerInputs : MonoBehaviour
     {
         _controls = new();
         InitializeInputs();
-
-        _groundCheckRadius = transform.localScale.y / 1.9f;
     }
     private void OnEnable()
     {
@@ -72,7 +74,8 @@ public class PlayerInputs : MonoBehaviour
 
     private void CheckGrounded()
     {
-        _isGrounded = Physics2D.OverlapCircle(transform.position, _groundCheckRadius, _groundLayer);
+        _isGrounded = Physics2D.OverlapCapsule(
+            transform.position, new Vector2(_groundCheckWidth, _groundCheckHeight), CapsuleDirection2D.Vertical, 0f, _groundLayer);
     }
 
     private void GetMoveVector()
@@ -115,7 +118,15 @@ public class PlayerInputs : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, _groundCheckRadius);
+        Gizmos.color = Color.red;
+
+        Vector2 capsulePosition = transform.position;
+        Vector2 top = capsulePosition + Vector2.up * (_groundCheckHeight / 2);
+        Vector2 bottom = capsulePosition - Vector2.up * (_groundCheckHeight / 2);
+
+        Gizmos.DrawWireSphere(top, _groundCheckWidth / 2);
+        Gizmos.DrawWireSphere(bottom, _groundCheckWidth / 2);
+
+        Gizmos.DrawLine(top, bottom);
     }
 }

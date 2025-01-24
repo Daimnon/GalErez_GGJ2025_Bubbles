@@ -40,6 +40,7 @@ public class Bubble : MonoBehaviour, IFreezable
     {
         _animationState.Invoke();
     }
+
     private void CheckPlayer()
     {
         Vector2 circleOrigin = transform.position + Vector3.up * (transform.localScale.y / _playerCheckOffset);
