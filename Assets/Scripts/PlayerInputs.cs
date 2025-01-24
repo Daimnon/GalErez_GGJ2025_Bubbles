@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerInputs : MonoBehaviour
@@ -29,6 +30,9 @@ public class PlayerInputs : MonoBehaviour
     [SerializeField] private Sprite _landingSprite;
     [SerializeField] private float _groundCheckWidth = 0.4f;
     [SerializeField] private float _groundCheckHeight = 1.1f;
+
+    [Header("Camera")]
+    [SerializeField] private Transform _tracker;
 
     [Header("Bubble Interactions")]
     [SerializeField] private BubblePooler _bubblePooler;
@@ -83,8 +87,20 @@ public class PlayerInputs : MonoBehaviour
         _isGrounded = Physics2D.OverlapCapsule(
             transform.position, new Vector2(_groundCheckWidth, _groundCheckHeight), CapsuleDirection2D.Vertical, 0f, _groundLayer);
 
-        if (isGrounded && !_isGrounded) _animator.SetBool("IsJumping", true);
-        if (!isGrounded && _isGrounded) _animator.SetBool("IsJumping", false);
+        if (isGrounded && !_isGrounded)
+        {
+            _animator.SetBool("IsJumping", true);
+
+            // camera
+            Vector3 newTrackerPos = transform.position + Vector3.down;
+            newTrackerPos.y = _tracker.position.y;
+            _tracker.position = newTrackerPos;
+        }
+        if (!isGrounded && _isGrounded)
+        {
+            _animator.SetBool("IsJumping", false);
+            _tracker.position = transform.position; // camera
+        }
     }
 
     private void GetMoveVector()
@@ -98,7 +114,11 @@ public class PlayerInputs : MonoBehaviour
     private void Move(Vector2 moveVector, Rigidbody2D rb2D)
     {
         if (!_isInputEnabled) return;
-        if (moveVector != Vector2.zero) _isMirrored = moveVector.x < 0 ? true : false;
+        if (moveVector != Vector2.zero)
+        {
+            _isMirrored = moveVector.x < 0 ? true : false;
+            _tracker.position = transform.position;
+        } 
 
         moveVector.y = 0.0f;
         Vector2 moveDirection = moveVector.normalized;
@@ -106,12 +126,16 @@ public class PlayerInputs : MonoBehaviour
         Vector2 targetVelocity = newVelocity * _speed;
         targetVelocity.y = rb2D.velocity.y;
 
+        // animation
         float accelerationFactor = moveVector.magnitude > 0 ? _acceleration : _deceleration;
         rb2D.velocity = Vector2.Lerp(rb2D.velocity, targetVelocity, accelerationFactor * Time.fixedUnscaledDeltaTime);
         _animator.SetFloat("Speed", _moveInputValue.magnitude);
-
         _sR.flipX = _isMirrored;
-        // add camera movement with up and down
+
+        // camera
+        Vector3 newTrackerPos = transform.position + ((Vector3)moveDirection / 2);
+        newTrackerPos.y = _tracker.position.y;
+        _tracker.position = newTrackerPos;
     }
     private void Jump(InputAction.CallbackContext obj)
     {
