@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4925921410532800091}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Tracker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,6 +207,8 @@ MonoBehaviour:
   _landingSprite: {fileID: -1082079712, guid: b81e8c709ecd7cc49b891cae0cfe9c2b, type: 3}
   _groundCheckWidth: 0.4
   _groundCheckHeight: 1.1
+  _tracker: {fileID: 4925921410532800091}
+  _cameraJumpOffset: 2
   _bubblePooler: {fileID: 0}
   _blowBubbleForce: 0.125
 --- !u!1 &8683890769784739354
@@ -235,7 +237,7 @@ Transform:
   m_GameObject: {fileID: 8683890769784739354}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0, y: -0.4, z: 0}
   m_LocalScale: {x: 10.937499, y: 10.937499, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

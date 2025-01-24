@@ -301,7 +301,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.024399996, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -718,24 +718,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
-  m_LookaheadTime: 0
-  m_LookaheadSmoothing: 0
+  m_LookaheadTime: 0.5
+  m_LookaheadSmoothing: 5
   m_LookaheadIgnoreY: 0
-  m_XDamping: 1
-  m_YDamping: 5
-  m_ZDamping: 1
+  m_XDamping: 10
+  m_YDamping: 10
+  m_ZDamping: 0
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
-  m_ScreenY: 0.82
+  m_ScreenY: 0.5
   m_CameraDistance: 10
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
   m_UnlimitedSoftZone: 0
-  m_SoftZoneWidth: 0.8
-  m_SoftZoneHeight: 0.8
+  m_SoftZoneWidth: 0.45
+  m_SoftZoneHeight: 0.45
   m_BiasX: 0
-  m_BiasY: -0.4
+  m_BiasY: 0
   m_CenterOnActivate: 1
   m_GroupFramingMode: 2
   m_AdjustmentMode: 0
@@ -971,10 +971,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
-      propertyPath: _tracker
-      value: 
-      objectReference: {fileID: 980262735234501927}
-    - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
       propertyPath: _bubblePooler
       value: 
       objectReference: {fileID: 387130433}
@@ -984,7 +980,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1302655200027346137, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1302655200027346137, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1016,10 +1012,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1302655200027346137, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4888037202684867926, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
-      propertyPath: m_FlipX
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5315286151226868769, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}

@@ -33,7 +33,7 @@ public class PlayerInputs : MonoBehaviour
 
     [Header("Camera")]
     [SerializeField] private Transform _tracker;
-    [SerializeField] private float _cameraJumpOffset = 4.0f;
+    [SerializeField] private float _cameraJumpOffset = 2.0f;
 
     [Header("Bubble Interactions")]
     [SerializeField] private BubblePooler _bubblePooler;
@@ -91,20 +91,10 @@ public class PlayerInputs : MonoBehaviour
         if (isGrounded && !_isGrounded)
         {
             _animator.SetBool("IsJumping", true);
-
-            // camera
-            Vector3 newTrackerPos = transform.position + Vector3.down * _cameraJumpOffset;
-            newTrackerPos.y = _tracker.position.y;
-            _tracker.position = newTrackerPos;
         }
         if (!isGrounded && _isGrounded)
         {
             _animator.SetBool("IsJumping", false);
-            Vector3 newTrackerPos = transform.position + Vector3.down * _cameraJumpOffset * 2;
-        }
-        if (isGrounded &&_isGrounded)
-        {
-            _tracker.position = transform.position; // camera
         }
     }
 
@@ -136,11 +126,6 @@ public class PlayerInputs : MonoBehaviour
         rb2D.velocity = Vector2.Lerp(rb2D.velocity, targetVelocity, accelerationFactor * Time.fixedUnscaledDeltaTime);
         _animator.SetFloat("Speed", _moveInputValue.magnitude);
         _sR.flipX = _isMirrored;
-
-        // camera
-        Vector3 newTrackerPos = transform.position + ((Vector3)moveDirection / 2);
-        newTrackerPos.y = _tracker.position.y;
-        _tracker.position = newTrackerPos;
     }
     private void Jump(InputAction.CallbackContext obj)
     {
