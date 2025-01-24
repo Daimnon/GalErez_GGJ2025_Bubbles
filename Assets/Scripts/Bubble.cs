@@ -123,6 +123,7 @@ public class Bubble : MonoBehaviour, IFreezable
     {
         _rb2D.velocity = Vector3.zero;
         _elapsedTime = 0;
+        _blowDownTimer = 0;
         _startPosition = transform.position;
         _animationState = BlowingBubble;
     }
