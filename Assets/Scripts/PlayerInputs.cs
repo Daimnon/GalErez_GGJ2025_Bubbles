@@ -33,7 +33,6 @@ public class PlayerInputs : MonoBehaviour
 
     [Header("Camera")]
     [SerializeField] private Transform _tracker;
-    [SerializeField] private float _cameraJumpOffset = 2.0f;
 
     [Header("Bubble Interactions")]
     [SerializeField] private BubblePooler _bubblePooler;
@@ -84,18 +83,11 @@ public class PlayerInputs : MonoBehaviour
     {
         bool isGrounded = _isGrounded;
 
-
         _isGrounded = Physics2D.OverlapCapsule(
             transform.position, new Vector2(_groundCheckWidth, _groundCheckHeight), CapsuleDirection2D.Vertical, 0f, _groundLayer);
 
-        if (isGrounded && !_isGrounded)
-        {
-            _animator.SetBool("IsJumping", true);
-        }
-        if (!isGrounded && _isGrounded)
-        {
-            _animator.SetBool("IsJumping", false);
-        }
+        if (isGrounded && !_isGrounded) _animator.SetBool("IsJumping", true);
+        if (!isGrounded && _isGrounded) _animator.SetBool("IsJumping", false);
     }
 
     private void GetMoveVector()
@@ -109,11 +101,7 @@ public class PlayerInputs : MonoBehaviour
     private void Move(Vector2 moveVector, Rigidbody2D rb2D)
     {
         if (!_isInputEnabled) return;
-        if (moveVector != Vector2.zero)
-        {
-            _isMirrored = moveVector.x < 0 ? true : false;
-            _tracker.position = transform.position;
-        } 
+        if (moveVector != Vector2.zero) _isMirrored = moveVector.x < 0 ? true : false;
 
         moveVector.y = 0.0f;
         Vector2 moveDirection = moveVector.normalized;

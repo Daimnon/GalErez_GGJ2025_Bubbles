@@ -48,6 +48,10 @@ public class Bubble : MonoBehaviour, IFreezable
         _mainCam = Camera.main;
         _outOfBoundsLimit = _mainCam.orthographicSize * 2;
     }
+    private void OnEnable()
+    {
+        
+    }
 
     private void Update()
     {
@@ -68,20 +72,18 @@ public class Bubble : MonoBehaviour, IFreezable
 
     private void CheckPlayer()
     {
-        
         if (_isFrozen) return;
         Vector2 rayOrigin = transform.position;
 
         Vector2 rayDirection = Vector2.up;
         float rayDistance = transform.localScale.y * _playerCheckDistance;
 
-
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
         if (_animator.GetBool("IsPopped"))
         {
             if (stateInfo.normalizedTime >= 0.9f)
             {
-                ResetAnimationState();
+                _animator.SetBool("IsPopped", false);
                 _bubblePooler.ReturnToPool(this);
                 return;
             }
@@ -94,12 +96,11 @@ public class Bubble : MonoBehaviour, IFreezable
             _startPosition = transform.position;
             _idleCollider.enabled = false;
             _underPlayerCollider.enabled = true;
-            _sR.sprite = _idleSprites[1];
+            _animator.SetBool("IsUnderPlayer", true);
             _animationState = StepForPlayer;
         }
         else if (hit.collider == null && _animationState == StepForPlayer && _blowDownTimer <= 0)
         {
-            // do pop animation
             _animator.SetBool("IsPopped", true);
         }
         
@@ -134,15 +135,25 @@ public class Bubble : MonoBehaviour, IFreezable
     }
     private void StepForPlayer()
     {
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        if (_animator.GetBool("IsPopped"))
+        {
+            if (stateInfo.normalizedTime >= 0.9f)
+            {
+                _animator.SetBool("IsPopped", false);
+                _bubblePooler.ReturnToPool(this);
+                return;
+            }
+        }
+
         if (transform.localScale.x < 1.0f)
         {
-            _bubblePooler.ReturnToPool(this);
+            _animator.SetBool("IsPopped", true);
             return;
         }
 
         _elapsedTime += Time.fixedDeltaTime;
-        float verticalOffset = _elapsedTime * _verticalSpeed;
-
+        float verticalOffset = _elapsedTime * _verticalSpeed /2;
         transform.position = _startPosition + new Vector3(0.0f, -verticalOffset /2, 0.0f);
     }
 
@@ -157,6 +168,8 @@ public class Bubble : MonoBehaviour, IFreezable
         _sR.enabled = true; // sprite renderer is being disabled by the pop animation
         _isFrozen = false;
         _animator.SetBool("IsPopped", false);
+        _animator.SetBool("IsUnderPlayer", false);
+        _animator.SetBool("IsBlown", true);
         _animationState = BlowingBubble;
     }
     public void BlowBubble(Vector2 blowBubbleDirection, float blowForce, bool isMirrored)
@@ -169,6 +182,7 @@ public class Bubble : MonoBehaviour, IFreezable
             _blowDownTimer = _blowDownTime;
         }
         else _rb2D.AddForce(blowBubbleDirection * blowForce, ForceMode2D.Impulse);
+        _animator.SetBool("IsBlown", false);
     }
 
     private void OnDrawGizmos()

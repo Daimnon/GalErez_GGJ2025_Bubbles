@@ -22,7 +22,6 @@ public class BubblePooler : MonoBehaviour
             newBubble.BubblePoller = this;
             newBubble.gameObject.SetActive(false);
             newBubble.IsFrozen = true;
-            newBubble.ResetAnimationState();
             _pool.Add(newBubble);
         }
     }
