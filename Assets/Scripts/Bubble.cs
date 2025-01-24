@@ -14,8 +14,8 @@ public class Bubble : MonoBehaviour, IFreezable
     private float _outOfBoundsLimit = 0;
 
     [Header("Bubble core behaviour")]
-    [SerializeField] private float _sideSway = 1f;
-    [SerializeField] private float _horizontalSpeed = 1f;
+    [SerializeField] private float _sideSway = 1.0f;
+    [SerializeField] private float _horizontalSpeed = 1.0f;
     [SerializeField] private float _verticalSpeed = 0.5f;
     private Vector3 _startPosition;
     private float _elapsedTime;
@@ -24,6 +24,8 @@ public class Bubble : MonoBehaviour, IFreezable
     [Header("Blow animation config")]
     [SerializeField] private Rigidbody2D _rb2D;
     [SerializeField] private float _growthAmount = 20.0f;
+    [SerializeField] private float _blowDownTimer = 0.0f;
+    [SerializeField] private float _blowDownTime = 3.0f;
 
     [Header("Check Player")]
     [SerializeField] private LayerMask _playerLayer;
@@ -43,6 +45,9 @@ public class Bubble : MonoBehaviour, IFreezable
         if (_isFrozen) return;
 
         CheckPlayer();
+
+        if (_blowDownTimer > 0) _blowDownTimer -= Time.deltaTime;
+        Debug.Log(_blowDownTimer);
     }
     private void FixedUpdate()
     {
@@ -67,7 +72,7 @@ public class Bubble : MonoBehaviour, IFreezable
             _startPosition = transform.position;
             _animationState = StepForPlayer;
         }
-        else if (hit.collider == null && _animationState == StepForPlayer)
+        else if (hit.collider == null && _animationState == StepForPlayer && _blowDownTimer <= 0)
         {
             // do pop animation
             _bubblePooler.ReturnToPool(this);
@@ -125,7 +130,11 @@ public class Bubble : MonoBehaviour, IFreezable
     {
         _swayDirection = isMirrored ? 1.0f : -1.0f;
 
-        if (blowBubbleDirection == Vector2.down) _rb2D.AddForce(blowBubbleDirection * blowForce * 3, ForceMode2D.Impulse);
+        if (blowBubbleDirection == Vector2.down)
+        {
+            _rb2D.AddForce(10 * blowForce * blowBubbleDirection, ForceMode2D.Impulse);
+            _blowDownTimer = _blowDownTime;
+        }
         else _rb2D.AddForce(blowBubbleDirection * blowForce, ForceMode2D.Impulse);
     }
 
