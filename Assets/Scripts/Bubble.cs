@@ -27,8 +27,7 @@ public class Bubble : MonoBehaviour, IFreezable
 
     [Header("Check Player")]
     [SerializeField] private LayerMask _playerLayer;
-    [SerializeField] private float _playerCheckOffset = 2.0f;
-    [SerializeField] private float _playerCheckRadius = 3.0f;
+    [SerializeField] private float _playerCheckDistance = 3.0f;
 
     private delegate void StateMachine();
     private StateMachine _animationState;
@@ -55,18 +54,20 @@ public class Bubble : MonoBehaviour, IFreezable
 
     private void CheckPlayer()
     {
-        Vector2 circleOrigin = transform.position + Vector3.up * (transform.localScale.y / _playerCheckOffset);
-        float radius = transform.localScale.y / _playerCheckRadius;
+        Vector2 rayOrigin = transform.position;
 
-        Collider2D hit = Physics2D.OverlapCircle(circleOrigin, radius, _playerLayer);
+        Vector2 rayDirection = Vector2.up;
+        float rayDistance = transform.localScale.y * _playerCheckDistance;
 
-        if (hit != null && _animationState != StepForPlayer)
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, rayDistance, _playerLayer);
+
+        if (hit.collider != null && _animationState != StepForPlayer)
         {
-            Debug.Log($"Hit detected above the bubble: {hit.name}");
+            Debug.Log($"Ray hit detected above the bubble: {hit.collider.name}");
             _startPosition = transform.position;
             _animationState = StepForPlayer;
         }
-        else if (hit == null && _animationState == StepForPlayer)
+        else if (hit.collider == null && _animationState == StepForPlayer)
         {
             // do pop animation
             _bubblePooler.ReturnToPool(this);
@@ -115,6 +116,9 @@ public class Bubble : MonoBehaviour, IFreezable
 
     public void ResetAnimationState()
     {
+        _rb2D.velocity = Vector3.zero;
+        _elapsedTime = 0;
+        _startPosition = transform.position;
         _animationState = BlowingBubble;
     }
     public void BlowBubble(Vector2 blowBubbleDirection, float blowForce, bool isMirrored)
@@ -127,9 +131,12 @@ public class Bubble : MonoBehaviour, IFreezable
 
     private void OnDrawGizmos()
     {
-        Vector2 circleOrigin = transform.position + Vector3.up * (transform.localScale.y / _playerCheckOffset);
-        float radius = transform.localScale.y / _playerCheckRadius;
+        Vector2 rayOrigin = transform.position;
+
+        Vector2 rayDirection = Vector2.up;
+        float rayDistance = transform.localScale.y * _playerCheckDistance;
+
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(circleOrigin, radius);
+        Gizmos.DrawLine(rayOrigin, rayOrigin + rayDirection * rayDistance);
     }
 }
