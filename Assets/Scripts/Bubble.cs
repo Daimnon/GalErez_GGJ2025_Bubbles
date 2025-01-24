@@ -23,6 +23,10 @@ public class Bubble : MonoBehaviour, IFreezable
 
     [Header("Blow animation config")]
     [SerializeField] private Rigidbody2D _rb2D;
+    [SerializeField] private SpriteRenderer _sR;
+    [SerializeField] private CapsuleCollider2D _idleCollider;
+    [SerializeField] private CapsuleCollider2D _underPlayerCollider;
+    [SerializeField] private Sprite[] _idleSprites;
     [SerializeField] private float _growthAmount = 20.0f;
     [SerializeField] private float _blowDownTimer = 0.0f;
     [SerializeField] private float _blowDownTime = 3.0f;
@@ -70,6 +74,9 @@ public class Bubble : MonoBehaviour, IFreezable
         {
             Debug.Log($"Ray hit detected above the bubble: {hit.collider.name}");
             _startPosition = transform.position;
+            _idleCollider.enabled = false;
+            _underPlayerCollider.enabled = true;
+            _sR.sprite = _idleSprites[1];
             _animationState = StepForPlayer;
         }
         else if (hit.collider == null && _animationState == StepForPlayer && _blowDownTimer <= 0)
@@ -102,6 +109,7 @@ public class Bubble : MonoBehaviour, IFreezable
         {
             transform.localScale = Vector3.one;
             _startPosition = transform.position;
+            _sR.sprite = _idleSprites[0];
             _animationState = Idle;
         }
     }
@@ -125,6 +133,8 @@ public class Bubble : MonoBehaviour, IFreezable
         _elapsedTime = 0;
         _blowDownTimer = 0;
         _startPosition = transform.position;
+        _idleCollider.enabled = true;
+        _underPlayerCollider.enabled = false;
         _animationState = BlowingBubble;
     }
     public void BlowBubble(Vector2 blowBubbleDirection, float blowForce, bool isMirrored)

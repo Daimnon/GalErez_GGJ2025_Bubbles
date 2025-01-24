@@ -233,6 +233,12 @@ MonoBehaviour:
   _horizontalSpeed: 1
   _verticalSpeed: 0.5
   _rb2D: {fileID: 5576537400746410229}
+  _sR: {fileID: 19289807641770209}
+  _idleCollider: {fileID: 5295919613784535063}
+  _underPlayerCollider: {fileID: 2090236973303748150}
+  _idleSprites:
+  - {fileID: 2069447768, guid: b81e8c709ecd7cc49b891cae0cfe9c2b, type: 3}
+  - {fileID: -1901790454, guid: b81e8c709ecd7cc49b891cae0cfe9c2b, type: 3}
   _growthAmount: 10
   _blowDownTimer: 0
   _blowDownTime: 3
