@@ -92,6 +92,7 @@ public class PlayerInputs : MonoBehaviour
         Vector2 moveDirection = moveVector.normalized;
         Vector2 newVelocity = Time.fixedUnscaledDeltaTime * moveDirection;
         Vector2 targetVelocity = newVelocity * _speed;
+        targetVelocity.y = rb2D.velocity.y;
 
         float accelerationFactor = moveVector.magnitude > 0 ? _acceleration : _deceleration;
         rb2D.velocity = Vector2.Lerp(rb2D.velocity, targetVelocity, accelerationFactor * Time.fixedUnscaledDeltaTime);
