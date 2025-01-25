@@ -23,6 +23,8 @@ public class PlayerInputs : MonoBehaviour
     [SerializeField] private float _speed = 100.0f;
     [SerializeField] private float _acceleration = 20.0f;
     [SerializeField] private float _deceleration = 1.0f;
+    [SerializeField] private Vector2 _outOfBoundsX = new(-10.5f, 10.5f);
+    [SerializeField] private float _throwBackForce = 2.0f;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private float _jumpForce = 5.0f;
 
@@ -114,6 +116,9 @@ public class PlayerInputs : MonoBehaviour
         rb2D.velocity = Vector2.Lerp(rb2D.velocity, targetVelocity, accelerationFactor * Time.fixedUnscaledDeltaTime);
         _animator.SetFloat("Speed", _moveInputValue.magnitude);
         _sR.flipX = _isMirrored;
+
+        if (transform.position.x > _outOfBoundsX.y) _rb2D.AddForce(Vector2.left * _throwBackForce, ForceMode2D.Impulse);
+        if (transform.position.x < _outOfBoundsX.x) _rb2D.AddForce(Vector2.right * _throwBackForce, ForceMode2D.Impulse);
     }
     private void Jump(InputAction.CallbackContext obj)
     {
