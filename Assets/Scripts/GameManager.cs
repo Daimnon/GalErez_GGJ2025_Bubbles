@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Color[] _levelColors;
     [SerializeField] private UnityEngine.UI.Image _overlayImg;
     private ColorAdjustments _colorAdjustments;
+    private Bloom _bloom;
 
     private void Start()
     {
@@ -64,7 +65,15 @@ public class GameManager : MonoBehaviour
 
             _postProcessBloomColor = ConvertColorToHDR(_overlayImg.color);
             _colorAdjustments.colorFilter.value = _postProcessBloomColor;
+
+            if (_volume.profile.TryGet(out Bloom bloom))
+            {
+                _bloom = bloom;
+                //_bloom.tint.value = _overlayImg.color;
+            }
         }
+
+        
     }
     private void ApplyVFXs()
     {
@@ -77,5 +86,7 @@ public class GameManager : MonoBehaviour
         _overlayImg.color = new Color(targetColor.r, targetColor.g, targetColor.b, alpha);
         _postProcessBloomColor = ConvertColorToHDR(_overlayImg.color);
         _colorAdjustments.colorFilter.value = _postProcessBloomColor;
+        //_bloom.tint.value = _overlayImg.color;
+        _bloom.intensity.value = progress + 0.5f;
     }
 }
