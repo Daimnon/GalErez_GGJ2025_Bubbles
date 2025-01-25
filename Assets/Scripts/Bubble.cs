@@ -50,7 +50,13 @@ public class Bubble : MonoBehaviour, IFreezable
     }
     private void OnEnable()
     {
-        
+        _animator.enabled = true;
+        _animator.SetBool("IsBlown", true);
+    }
+    private void OnDisable()
+    {
+        _animator.enabled = false;
+        _animator.SetBool("IsPopping", false);
     }
 
     private void Update()
