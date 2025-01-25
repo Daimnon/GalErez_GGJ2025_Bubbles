@@ -40,6 +40,14 @@ public class PlayerInputs : MonoBehaviour
     [SerializeField] private BubblePooler _bubblePooler;
     [SerializeField] private float _blowBubbleForce = 20.0f;
 
+    [Header("Sounds")]
+    [SerializeField] private AudioSource _actionsAudioSource;
+    [SerializeField] private AudioClip[] _footsteps;
+    [SerializeField] private AudioClip _jump;
+    [SerializeField] private AudioClip[] _waterSteps;
+    [SerializeField] private float _footstepCooldown = 0.2f;
+    private float _lastFootstepTime = 0.0f;
+
     private void Awake()
     {
         _controls = new();
@@ -103,7 +111,30 @@ public class PlayerInputs : MonoBehaviour
     private void Move(Vector2 moveVector, Rigidbody2D rb2D)
     {
         if (!_isInputEnabled) return;
-        if (moveVector != Vector2.zero) _isMirrored = moveVector.x < 0 ? true : false;
+        if (moveVector != Vector2.zero)
+        {
+            _isMirrored = moveVector.x < 0 ? true : false;
+
+            bool isPlayingFootstep = false;
+
+            if (_actionsAudioSource.isPlaying)
+            {
+                foreach (AudioClip footstep in _footsteps)
+                {
+                    if (_actionsAudioSource.clip == footstep)
+                    {
+                        isPlayingFootstep = true;
+                        break;
+                    }
+                }
+            }
+            if (!isPlayingFootstep && Time.time - _lastFootstepTime >= _footstepCooldown)
+            {
+                AudioClip randomFootstep = _footsteps[Random.Range(0, _footsteps.Length)];
+                _actionsAudioSource.PlayOneShot(randomFootstep);
+                _lastFootstepTime = Time.time; // Update the last footstep time
+            }
+        }
 
         moveVector.y = 0.0f;
         Vector2 moveDirection = moveVector.normalized;
