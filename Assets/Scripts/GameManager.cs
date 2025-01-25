@@ -16,10 +16,10 @@ public class GameManager : MonoBehaviour
 
     [Header("Vfx's")]
     [SerializeField] private Volume _volume;
-    [SerializeField] private ColorAdjustments _colorAdjustments;
     [SerializeField, ColorUsage(true, true)] private Color _postProcessBloomColor;
     [SerializeField] private Color[] _levelColors;
     [SerializeField] private UnityEngine.UI.Image _overlayImg;
+    private ColorAdjustments _colorAdjustments;
 
     private void Start()
     {

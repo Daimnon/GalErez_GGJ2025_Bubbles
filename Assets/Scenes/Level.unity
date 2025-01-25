@@ -589,6 +589,11 @@ MonoBehaviour:
   _levelGroundPrefab: {fileID: 7163466049848987524, guid: 558abe81ffcc82045a4f99e9f255fe64, type: 3}
   _playerTr: {fileID: 1717633586}
   _yDistanceToTravel: 20
+  _checkpoint: {x: 0, y: 0.5, z: 0}
+  _currentDistanceTraveled: 0
+  _levelID: 1
+  _volume: {fileID: 1228187976}
+  _postProcessBloomColor: {r: 1, g: 1, b: 1, a: 1}
   _levelColors:
   - {r: 0.5990566, g: 1, b: 1, a: 1}
   - {r: 0.6, g: 1, b: 0.8345526, a: 1}
