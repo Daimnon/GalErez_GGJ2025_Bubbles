@@ -976,8 +976,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _virtualCamera: {fileID: 2024394685}
-  _minX: -1
-  _maxX: 1
+  _minX: -2
+  _maxX: 2
+  _minY: 0
 --- !u!1001 &980262735234501926
 PrefabInstance:
   m_ObjectHideFlags: 0
