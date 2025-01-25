@@ -16,6 +16,8 @@ public class PlayerInputs : MonoBehaviour
     private bool _isMirrored = false;
     private bool _isGrounded = false;
 
+    public bool IsOnBubble { get; set; }
+
     [Header("Player Config")]
     [SerializeField] private Rigidbody2D _rb2D;
     [SerializeField] private SpriteRenderer _sR;
@@ -42,9 +44,8 @@ public class PlayerInputs : MonoBehaviour
 
     [Header("Sounds")]
     [SerializeField] private AudioSource _actionsAudioSource;
-    [SerializeField] private AudioClip[] _footsteps;
-    [SerializeField] private AudioClip _jump;
-    [SerializeField] private AudioClip[] _waterSteps;
+    [SerializeField] private AudioClip[] _footstepClips;
+    [SerializeField] private AudioClip _jumpClip;
     [SerializeField] private float _footstepCooldown = 0.2f;
     private float _lastFootstepTime = 0.0f;
 
@@ -116,10 +117,9 @@ public class PlayerInputs : MonoBehaviour
             _isMirrored = moveVector.x < 0 ? true : false;
 
             bool isPlayingFootstep = false;
-
-            if (_actionsAudioSource.isPlaying)
+            if (_actionsAudioSource.isPlaying) // check if already playing footstep sound
             {
-                foreach (AudioClip footstep in _footsteps)
+                foreach (AudioClip footstep in _footstepClips)
                 {
                     if (_actionsAudioSource.clip == footstep)
                     {
@@ -128,9 +128,9 @@ public class PlayerInputs : MonoBehaviour
                     }
                 }
             }
-            if (!isPlayingFootstep && Time.time - _lastFootstepTime >= _footstepCooldown)
+            if (_isGrounded && !isPlayingFootstep && Time.time - _lastFootstepTime >= _footstepCooldown) // actual play sound condition
             {
-                AudioClip randomFootstep = _footsteps[Random.Range(0, _footsteps.Length)];
+                AudioClip randomFootstep = _footstepClips[Random.Range(0, _footstepClips.Length)];
                 _actionsAudioSource.PlayOneShot(randomFootstep);
                 _lastFootstepTime = Time.time; // Update the last footstep time
             }
@@ -153,7 +153,13 @@ public class PlayerInputs : MonoBehaviour
     }
     private void Jump(InputAction.CallbackContext obj)
     {
-        if (_isGrounded) _rb2D.velocity = new Vector2(_rb2D.velocity.x, _jumpForce);
+        if (_isGrounded)
+        {
+            _rb2D.velocity = new Vector2(_rb2D.velocity.x, _jumpForce);
+            _actionsAudioSource.Stop();
+            _actionsAudioSource.pitch = 1.0f + Random.Range(-0.2f, 0.2f);
+            _actionsAudioSource.PlayOneShot(_jumpClip);
+        }
     }
     private void Fire(InputAction.CallbackContext obj)
     {

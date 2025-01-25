@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Bubble : MonoBehaviour, IFreezable
 {
+    private const string PLAYER_TAG = "Player";
+
     private BubblePooler _bubblePooler = null;
     public BubblePooler @BubblePoller { get => _bubblePooler; set => _bubblePooler = value; }
 
@@ -12,6 +14,7 @@ public class Bubble : MonoBehaviour, IFreezable
     public bool IsFrozen { get => _isFrozen; set => _isFrozen = value; }
 
     private Camera _mainCam;
+    private PlayerInputs _player;
     private float _outOfBoundsLimit = 0;
 
     [Header("Bubble core behaviour")]
@@ -39,6 +42,12 @@ public class Bubble : MonoBehaviour, IFreezable
     [Header("Check Player")]
     [SerializeField] private LayerMask _playerLayer;
     [SerializeField] private float _playerCheckDistance = 3.0f;
+
+    [Header("Sounds")]
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _blowBubbleClip;
+    [SerializeField] private AudioClip[] _waterStepClips;
+    [SerializeField] private AudioClip _popBubbleClip;
 
     private delegate void StateMachine();
     private StateMachine _animationState;
@@ -96,7 +105,7 @@ public class Bubble : MonoBehaviour, IFreezable
         }
         
         RaycastHit2D hit = Physics2D.Raycast(rayOrigin, rayDirection, rayDistance, _playerLayer);
-        if (hit.collider != null && _animationState != StepForPlayer)
+        if (hit.collider != null && hit.collider.CompareTag(PLAYER_TAG) && _animationState != StepForPlayer)
         {
             Debug.Log($"Ray hit detected above the bubble: {hit.collider.name}");
             _startPosition = transform.position;
@@ -104,12 +113,18 @@ public class Bubble : MonoBehaviour, IFreezable
             _underPlayerCollider.enabled = true;
             _animator.SetBool("IsUnderPlayer", true);
             _animationState = StepForPlayer;
+            _audioSource.Stop();
+            _audioSource.PlayOneShot(_waterStepClips[Random.Range(0, _waterStepClips.Length)]);
+            _player = hit.collider.GetComponent<PlayerInputs>();
         }
-        else if (hit.collider == null && _animationState == StepForPlayer && _blowDownTimer <= 0)
+        else if (hit.collider == null && _player && _animationState == StepForPlayer && _blowDownTimer <= 0)
         {
             _animator.SetBool("IsPopped", true);
+            _audioSource.Stop();
+            _audioSource.pitch = 1.0f + Random.Range(-0.2f, 0.2f);
+            _audioSource.PlayOneShot(_popBubbleClip);
+            _player = null;
         }
-        
     }
     private void CheckIfBubbleOutOfRange()
     {
@@ -155,6 +170,9 @@ public class Bubble : MonoBehaviour, IFreezable
         if (transform.localScale.x < 1.0f)
         {
             _animator.SetBool("IsPopped", true);
+            _audioSource.Stop();
+            _audioSource.pitch = 1.0f + Random.Range(-0.2f, 0.2f);
+            _audioSource.PlayOneShot(_popBubbleClip);
             return;
         }
 
@@ -189,6 +207,9 @@ public class Bubble : MonoBehaviour, IFreezable
         }
         else _rb2D.AddForce(blowBubbleDirection * blowForce, ForceMode2D.Impulse);
         _animator.SetBool("IsBlown", false);
+        _audioSource.Stop();
+        _audioSource.pitch = 1.0f + Random.Range(-0.2f, 0.2f);
+        _audioSource.PlayOneShot(_blowBubbleClip);
     }
 
     private void OnDrawGizmos()

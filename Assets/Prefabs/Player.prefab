@@ -215,15 +215,16 @@ MonoBehaviour:
   _bubblePooler: {fileID: 0}
   _blowBubbleForce: 0.125
   _actionsAudioSource: {fileID: 2599128497851716891}
-  _footsteps:
+  _footstepClips:
   - {fileID: 8300000, guid: eaa8b41313717fe41b4e1cbcc3d30a64, type: 3}
   - {fileID: 8300000, guid: 84f12d3d2170ba34aac7b2c960ee7609, type: 3}
   - {fileID: 8300000, guid: b95484c97d0309845b499fc5fd773af4, type: 3}
-  _jump: {fileID: 8300000, guid: 774779d2cbc4229409fe4ad1971f99ac, type: 3}
-  _waterSteps:
+  _jumpClip: {fileID: 8300000, guid: 774779d2cbc4229409fe4ad1971f99ac, type: 3}
+  _waterStepClips:
   - {fileID: 8300000, guid: e6324af287e52b641a3c2f4e72db764a, type: 3}
   - {fileID: 8300000, guid: 48f8768b1ab31cc4f8df2892adae913b, type: 3}
   - {fileID: 8300000, guid: be4c44cd11968cd4db968fa873511330, type: 3}
+  _footstepCooldown: 0.275
 --- !u!82 &2599128497851716891
 AudioSource:
   m_ObjectHideFlags: 0

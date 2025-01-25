@@ -1144,6 +1144,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
+      propertyPath: _jumpClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 774779d2cbc4229409fe4ad1971f99ac, type: 3}
+    - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
       propertyPath: _bubblePooler
       value: 
       objectReference: {fileID: 387130433}
@@ -1151,6 +1155,38 @@ PrefabInstance:
       propertyPath: _footstepCooldown
       value: 0.275
       objectReference: {fileID: 0}
+    - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
+      propertyPath: _footstepClips.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
+      propertyPath: _waterStepClips.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
+      propertyPath: _footstepClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: eaa8b41313717fe41b4e1cbcc3d30a64, type: 3}
+    - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
+      propertyPath: _footstepClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 84f12d3d2170ba34aac7b2c960ee7609, type: 3}
+    - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
+      propertyPath: _footstepClips.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: b95484c97d0309845b499fc5fd773af4, type: 3}
+    - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
+      propertyPath: _waterStepClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: e6324af287e52b641a3c2f4e72db764a, type: 3}
+    - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
+      propertyPath: _waterStepClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 48f8768b1ab31cc4f8df2892adae913b, type: 3}
+    - target: {fileID: 15212170607170502, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
+      propertyPath: _waterStepClips.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: be4c44cd11968cd4db968fa873511330, type: 3}
     - target: {fileID: 1302655200027346137, guid: 2cd7f022be92d2b4293aa957ac07e4d7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
