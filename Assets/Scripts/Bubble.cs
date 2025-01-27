@@ -6,6 +6,8 @@ using UnityEngine;
 public class Bubble : MonoBehaviour, IFreezable
 {
     private const string PLAYER_TAG = "Player";
+    private const float NORMAL_CHECK_DISTANCE = 0.75f;
+    private const float DOWNBLOWN_CHECK_DISTANCE = 0.4f;
 
     private BubblePooler _bubblePooler = null;
     public BubblePooler @BubblePoller { get => _bubblePooler; set => _bubblePooler = value; }
@@ -41,7 +43,7 @@ public class Bubble : MonoBehaviour, IFreezable
 
     [Header("Check Player")]
     [SerializeField] private LayerMask _playerLayer;
-    [SerializeField] private float _playerCheckDistance = 3.0f;
+    [SerializeField] private float _playerCheckDistance = 0.75f;
 
     [Header("Sounds")]
     [SerializeField] private AudioSource _audioSource;
@@ -75,7 +77,6 @@ public class Bubble : MonoBehaviour, IFreezable
         CheckPlayer();
 
         if (_blowDownTimer > 0) _blowDownTimer -= Time.deltaTime;
-        Debug.Log(_blowDownTimer);
     }
     private void FixedUpdate()
     {
@@ -116,6 +117,14 @@ public class Bubble : MonoBehaviour, IFreezable
             _audioSource.Stop();
             _audioSource.PlayOneShot(_waterStepClips[Random.Range(0, _waterStepClips.Length)]);
             _player = hit.collider.GetComponent<PlayerInputs>();
+
+            if (_blowDownTimer > 0) //handle downwards blown bubbles
+            {
+                _player.LandSoftly();
+                _playerCheckDistance = DOWNBLOWN_CHECK_DISTANCE;
+                _underPlayerCollider.size = new(_underPlayerCollider.size.x, _underPlayerCollider.size.y *2);
+                _underPlayerCollider.offset = new(_underPlayerCollider.offset.x, (_underPlayerCollider.offset.y - _underPlayerCollider.size.y/2) /1.5f);
+            }
         }
         else if (hit.collider == null && _player && _animationState == StepForPlayer && _blowDownTimer <= 0)
         {
@@ -123,6 +132,8 @@ public class Bubble : MonoBehaviour, IFreezable
             _audioSource.Stop();
             _audioSource.pitch = 1.0f + Random.Range(-0.2f, 0.2f);
             _audioSource.PlayOneShot(_popBubbleClip);
+            
+
             _player = null;
         }
     }
@@ -159,12 +170,19 @@ public class Bubble : MonoBehaviour, IFreezable
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
         if (_animator.GetBool("IsPopped"))
         {
-            if (stateInfo.normalizedTime >= 0.9f)
+            if (stateInfo.normalizedTime >= 0.6f)
             {
+                Debug.Log("GotIn");
+
+                _playerCheckDistance = NORMAL_CHECK_DISTANCE;
+                _underPlayerCollider.size = Vector2.one;
+                _underPlayerCollider.offset = Vector2.zero;
+                transform.localScale = new(0.3f, 0.3f, 0.3f);
                 _animator.SetBool("IsPopped", false);
                 _bubblePooler.ReturnToPool(this);
                 return;
             }
+            Debug.Log(stateInfo.normalizedTime);
         }
 
         if (transform.localScale.x < 1.0f)

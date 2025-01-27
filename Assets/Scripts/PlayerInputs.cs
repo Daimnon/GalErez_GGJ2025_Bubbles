@@ -170,6 +170,10 @@ public class PlayerInputs : MonoBehaviour
         Bubble bubble = _bubblePooler.GetFromPool(newBubblePos);
         bubble.BlowBubble(_lastInputValue, _blowBubbleForce, _isMirrored);
     }
+    public void LandSoftly()
+    {
+        _rb2D.velocity = Vector2.up;
+    }
 
     private void OnDrawGizmos()
     {

@@ -189,8 +189,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.12}
-  m_Size: {x: 1.25, y: 0.75}
+  m_Offset: {x: 0, y: -0.16}
+  m_Size: {x: 1.25, y: 1}
   m_Direction: 1
 --- !u!50 &5576537400746410229
 Rigidbody2D:
@@ -269,7 +269,7 @@ MonoBehaviour:
   _playerLayer:
     serializedVersion: 2
     m_Bits: 64
-  _playerCheckDistance: 1.25
+  _playerCheckDistance: 0.75
   _audioSource: {fileID: 3116146379570606166}
   _blowBubbleClip: {fileID: 8300000, guid: bf925c679b6203147b34a07a7ed69d17, type: 3}
   _waterStepClips:
